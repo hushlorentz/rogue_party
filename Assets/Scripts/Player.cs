@@ -6,9 +6,10 @@ public class Player : MonoBehaviour {
   private const int STATE_IDLE = 0;
   private const int STATE_MOVE = 1;
 
-  public float moveSpeed;
+  public float moveStep;
   public Color mainColour;
 
+  private GameManager gameManager;
   private Rigidbody2D rBody;
   private Collider2D col;
   private int state;
@@ -19,53 +20,48 @@ public class Player : MonoBehaviour {
     GetComponent<Renderer>().material.color = mainColour;
     col = GetComponent<Collider2D>();
     state = STATE_IDLE;
+    gameManager = GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>();
   }
 
   // FixedUpdate is called each physics time step. It is called at a set time interval.
   void FixedUpdate() {
 
-    //if (state == STATE_IDLE) {
-      //if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0) {
-        //StartCoroutine("move");
-      //} else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0) {
-        //StartCoroutine("move");
-      //}
-    //}
-    //
-    
-    if ((int)Input.GetAxisRaw("Horizontal") == 0 && (int)Input.GetAxisRaw("Vertical") == 0) { return; }
+    int xMove = (int)Input.GetAxisRaw("Horizontal");
+    int yMove = (int)Input.GetAxisRaw("Vertical");
 
-    Vector2 newPosition = transform.position;
-    newPosition.x += (int)Input.GetAxisRaw("Horizontal") * moveSpeed;
-    newPosition.y += (int)Input.GetAxisRaw("Vertical") * moveSpeed;
+    if (xMove != 0 || yMove != 0) {
+      if (state == STATE_IDLE) {
+        //get new position, then start the move coroutine
+        if (xMove != 0) {
+          yMove = 0; //no diagonal movement
+        }
 
-    Vector2 lineCheck = transform.position;
-    lineCheck.x += (GetComponent<Renderer>().bounds.extents.x + moveSpeed) * Input.GetAxisRaw("Horizontal");
-    lineCheck.y += (GetComponent<Renderer>().bounds.extents.y + moveSpeed) * Input.GetAxisRaw("Vertical"); 
+        Vector2 newPosition = transform.position;
+        newPosition.x += xMove * gameManager.tileWidth;
+        newPosition.y += yMove * gameManager.tileHeight;
 
-    col.enabled = false;
-    RaycastHit2D hit = Physics2D.Linecast(transform.position, lineCheck);
-    col.enabled = true;
+        //check for collision
+        col.enabled = false;
+        RaycastHit2D hit = Physics2D.Linecast(transform.position, newPosition);
+        col.enabled = true;
 
-    if (hit.transform == null) {
-      Debug.DrawLine(transform.position, lineCheck, Color.blue);
-      rBody.MovePosition(newPosition);
-    } else {
-      Debug.DrawLine(transform.position, lineCheck, Color.red);
+        if (hit.transform == null) {
+          StartCoroutine(moveTo(newPosition));
+        }
+      }
     }
   }
 
-  void Update() {
-  }
-
-  IEnumerator move() {
-    int i = 0;
+  IEnumerator moveTo(Vector2 dest) {
     state = STATE_MOVE;
 
-    while (i < 10) {
-      i++;
-      yield return new WaitForSeconds(0.1f);
+    while ((dest - (Vector2)transform.position).sqrMagnitude > float.Epsilon) {
+      Vector2 newPosition = Vector2.MoveTowards(transform.position, dest, moveStep);
+      rBody.MovePosition(newPosition);
+      yield return null;
     }
+
+    rBody.MovePosition(dest);
 
     state = STATE_IDLE;
   }
