@@ -27,9 +27,6 @@ public class BaseEnemy : BaseEntity {
   }
 
   private void handleIdle() {
-    int xMove = 0;
-    int yMove = 0;
-
     if (target == null) {
       handleNoTargetAction();
     } else {
@@ -62,7 +59,9 @@ public class BaseEnemy : BaseEntity {
           break;
       }
 
-      StartCoroutine(moveTo(newPosition, waitTime));
+      if (!hasCollision(transform.position, newPosition, out hit, wallLayer)) {
+        StartCoroutine(moveTo(newPosition, waitTime));
+      }
     }
   }
 
