@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour, BaseEntity.EntityListener {
   public int tileHeight = 1;
   public int mapWidth = 20;
   public int mapHeight = 20;
+  public bool turnBasedMovement = false;
   
   private Player player;
   private Enemy enemy;
@@ -39,24 +40,31 @@ public class GameManager : MonoBehaviour, BaseEntity.EntityListener {
   }
 
   void Update() {
-    if (isPlayersTurn) {
-      if (!player.isActive) {
-        player.isActive = true;
+    if (turnBasedMovement) {
+      if (isPlayersTurn) {
+        if (!player.isActive) {
+          player.isActive = true;
+        }
+      } else {
+        if (!enemy.isActive) {
+          enemy.isActive = true;
+        }
       }
     } else {
-      if (!enemy.isActive) {
-        enemy.isActive = true;
-      }
+      player.isActive = true;
+      enemy.isActive = true;
     }
   }
 
   public void entityFinished() {
-    if (isPlayersTurn) {
-      player.isActive = false;
-      isPlayersTurn = false;
-    } else {
-      enemy.isActive = false;
-      isPlayersTurn = true;
+    if (turnBasedMovement) {
+      if (isPlayersTurn) {
+        player.isActive = false;
+        isPlayersTurn = false;
+      } else {
+        enemy.isActive = false;
+        isPlayersTurn = true;
+      }
     }
   }
 }

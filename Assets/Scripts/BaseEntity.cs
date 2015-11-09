@@ -10,13 +10,14 @@ public abstract class BaseEntity : MonoBehaviour {
   public float moveStep = 0.1f;
   public Color mainColour;
   public bool isActive;
+  public float waitTime = 0.0f;
 
   protected const int STATE_IDLE = 0;
   protected const int STATE_MOVE = 1;
   protected GameManager gameManager;
   protected Rigidbody2D rBody;
   protected Collider2D col;
-  protected int state;
+  public int state;
   private EntityListener listener;
 
   public virtual void Start() {
@@ -40,8 +41,10 @@ public abstract class BaseEntity : MonoBehaviour {
 
   abstract protected void action();
 
-  protected IEnumerator moveTo(Vector2 dest) {
+  protected IEnumerator moveTo(Vector2 dest, float waitTime = 0.0f) {
     state = STATE_MOVE;
+
+    yield return new WaitForSeconds(waitTime);
 
     while ((dest - (Vector2)transform.position).sqrMagnitude > float.Epsilon) {
       Vector2 newPosition = Vector2.MoveTowards(transform.position, dest, moveStep * Time.deltaTime);
@@ -59,5 +62,13 @@ public abstract class BaseEntity : MonoBehaviour {
     if (listener != null) {
       listener.entityFinished();
     }
+  }
+
+  protected bool hasCollision(Vector2 pos, Vector2 dest, out RaycastHit2D hit, int layer = Physics2D.DefaultRaycastLayers) {
+    col.enabled = false;
+    col.enabled = true;
+
+    hit = Physics2D.Linecast(pos, dest, layer);
+    return hit.transform != null;
   }
 }

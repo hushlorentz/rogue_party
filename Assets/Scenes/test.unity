@@ -499,6 +499,18 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 11487554, guid: 89e775b7c482a4b1285a7d96a2780f8c, type: 2}
+      propertyPath: waitTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11487554, guid: 89e775b7c482a4b1285a7d96a2780f8c, type: 2}
+      propertyPath: range
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11487554, guid: 89e775b7c482a4b1285a7d96a2780f8c, type: 2}
+      propertyPath: wallLayer.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 89e775b7c482a4b1285a7d96a2780f8c, type: 2}
   m_IsPrefabParent: 0
@@ -631,6 +643,7 @@ MonoBehaviour:
   tileHeight: 1
   mapWidth: 20
   mapHeight: 20
+  turnBasedMovement: 0
 --- !u!4 &1983131296
 Transform:
   m_ObjectHideFlags: 0
