@@ -11,12 +11,12 @@ GameObject:
   - 33: {fileID: 3363424}
   - 23: {fileID: 2302710}
   - 50: {fileID: 5001028}
-  - 61: {fileID: 6177350}
+  - 58: {fileID: 5861212}
   - 114: {fileID: 11401222}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_TagString: Player
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -79,8 +79,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &6177350
-BoxCollider2D:
+--- !u!58 &5861212
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -91,7 +91,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Radius: .5
 --- !u!114 &11401222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -103,8 +103,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c405af3fd82594fd58aa3f1477e98fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveStep: 5
+  moveSpeed: 5
+  moveStep: 1
   mainColour: {r: .933823526, g: .0961288735, b: .0961288735, a: 0}
+  isActive: 0
+  waitTime: 0
+  state: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

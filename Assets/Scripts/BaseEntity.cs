@@ -7,6 +7,7 @@ public abstract class BaseEntity : MonoBehaviour {
     void entityFinished();
   }
 
+  public float moveSpeed = 5.0f;
   public float moveStep = 0.1f;
   public Color mainColour;
   public bool isActive;
@@ -62,6 +63,14 @@ public abstract class BaseEntity : MonoBehaviour {
     if (listener != null) {
       listener.entityFinished();
     }
+  }
+
+  protected bool hasCircleCollision(Vector2 pos, float radius, Vector2 direction, float distance, out RaycastHit2D hit) {
+    col.enabled = false;
+    hit = Physics2D.CircleCast(pos, radius, direction, distance);
+    col.enabled = true;
+
+    return hit.transform != null;
   }
 
   protected bool hasCollision(Vector2 pos, Vector2 dest, out RaycastHit2D hit, int layer = Physics2D.DefaultRaycastLayers) {
