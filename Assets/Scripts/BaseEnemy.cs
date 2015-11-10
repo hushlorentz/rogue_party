@@ -73,20 +73,14 @@ public class BaseEnemy : BaseEntity {
       finishTurn();
     } else {
       Debug.DrawLine(transform.position, player.transform.position, Color.red);
-      /*
-         Vector2 diff = target.transform.position - transform.position;
+      int xMove = 0;
+      int yMove = 0;
+      Vector2 diff = distanceToPlayer();
 
-         if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y)) {
-         xMove = target.transform.position.x > transform.position.x ? 1 : -1;
-         } else {
-         yMove = target.transform.position.y > transform.position.y ? 1 : -1;
-         }
-
-         if (xMove != 0 || yMove != 0) {
-         if (state == STATE_IDLE) {
-      //get new position, then start the move coroutine
-      if (xMove != 0) {
-      yMove = 0; //no diagonal movement
+      if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y)) {
+        xMove = target.transform.position.x > transform.position.x ? 1 : -1;
+      } else {
+        yMove = target.transform.position.y > transform.position.y ? 1 : -1;
       }
 
       Vector2 newPosition = transform.position;
@@ -94,21 +88,11 @@ public class BaseEnemy : BaseEntity {
       newPosition.y += yMove * gameManager.tileHeight;
 
       //check for collision
-      col.enabled = false;
-      RaycastHit2D hit = Physics2D.Linecast(transform.position, newPosition);
-      col.enabled = true;
-
-      if (hit.transform == null) {
-      StartCoroutine(moveTo(newPosition));
+      if (!hasCollision(transform.position, newPosition, out hit)) {
+        StartCoroutine(moveTo(newPosition));
       } else {
-      finishTurn();
+        finishTurn();
       }
-      }
-      } else {
-      finishTurn();
-      }
-      */
-      finishTurn();
     }
   }
 

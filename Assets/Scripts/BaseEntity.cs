@@ -66,9 +66,9 @@ public abstract class BaseEntity : MonoBehaviour {
 
   protected bool hasCollision(Vector2 pos, Vector2 dest, out RaycastHit2D hit, int layer = Physics2D.DefaultRaycastLayers) {
     col.enabled = false;
+    hit = Physics2D.Linecast(pos, dest, layer);
     col.enabled = true;
 
-    hit = Physics2D.Linecast(pos, dest, layer);
     return hit.transform != null;
   }
 }
