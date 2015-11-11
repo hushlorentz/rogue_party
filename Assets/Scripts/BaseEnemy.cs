@@ -7,6 +7,7 @@ public class BaseEnemy : BaseEntity {
   public GameObject player;
   public int range;
   public LayerMask wallLayer;
+  public float wanderDistance = 1.0f;
 
   private int rangeSquared;
 
@@ -46,16 +47,16 @@ public class BaseEnemy : BaseEntity {
 
       switch (moveDir) {
         case 0:
-          newPosition.x -= gameManager.tileWidth;
+          newPosition.x -= wanderDistance;
           break;
         case 1:
-          newPosition.x += gameManager.tileWidth;
+          newPosition.x += wanderDistance;
           break;
         case 2:
-          newPosition.y -= gameManager.tileHeight;
+          newPosition.y -= wanderDistance;
           break;
         case 3:
-          newPosition.y += gameManager.tileHeight;
+          newPosition.y += wanderDistance;
           break;
       }
 
@@ -84,8 +85,8 @@ public class BaseEnemy : BaseEntity {
       }
 
       Vector2 newPosition = transform.position;
-      newPosition.x += xMove * gameManager.tileWidth;
-      newPosition.y += yMove * gameManager.tileHeight;
+      newPosition.x += xMove * wanderDistance;
+      newPosition.y += yMove * wanderDistance;
 
       //check for collision
       if (!hasCollision(transform.position, newPosition, out hit)) {
